@@ -1,0 +1,92 @@
+
+<script type="text/javascript">
+    RED.nodes.registerType('colourconvert', {
+        category: 'function',
+        color: '#95cc95',
+        icon: "font-awesome/fa-paint-brush",
+        inputs: 1,
+        outputs: 1,
+        defaults: {
+            name: { value: "" },
+            format: { value: "rgb", required: true },
+            value: { value: "" },
+            valueType: { value: "str" }
+        },
+        paletteLabel: "colour convert",
+        label: function () {
+            if (this.name) return this.name
+            var labels = { rgb: "RGB", hsl: "HSL", xy: "CIE xy" }
+            return "colour (" + (labels[this.format] || this.format) + ")"
+        },
+        oneditprepare: function () {
+            $('#node-input-value').typedInput({
+                default: this.valueType || 'str',
+                types: ['str', 'json', 'msg', 'flow', 'global', 'env'],
+                typeField: $('#node-input-valueType')
+            })
+        }
+    })
+</script>
+
+<script type="text/x-red" data-template-name="colourconvert">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-format">Input is</label>
+        <select id="node-input-format" style="width:70%;">
+            <option value="rgb">RGB</option>
+            <option value="hsl">HSL</option>
+            <option value="xy">CIE xy</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-value">Value</label>
+        <input type="hidden" id="node-input-valueType">
+        <input type="text" id="node-input-value">
+    </div>
+    <div class="form-tips">
+        Leave <b>Value</b> blank to read the colour from <code>msg.payload</code>.
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="colourconvert">
+    <p>Converts a colour between RGB, HSL and CIE xy, and outputs every
+    representation in <code>msg.payload</code>.</p>
+
+    <h3>Configuration</h3>
+    <dl class="message-properties">
+        <dt>Input is</dt>
+        <dd>Which colour space the supplied value is in: <b>RGB</b>, <b>HSL</b>
+        or <b>CIE xy</b>.</dd>
+        <dt>Value</dt>
+        <dd>The colour to convert, as a typed input. Leave blank to use
+        <code>msg.payload</code> instead.</dd>
+    </dl>
+
+    <h3>Accepted value formats</h3>
+    <ul>
+        <li><b>RGB</b> &mdash; <code>"255,100,0"</code>, hex <code>"#ff6400"</code>
+        (or <code>"#f60"</code>), <code>{r:255,g:100,b:0}</code>, or
+        <code>[255,100,0]</code>. Channels are 0&ndash;255.</li>
+        <li><b>HSL</b> &mdash; <code>"30,100,50"</code>, <code>{h:30,s:100,l:50}</code>,
+        or <code>[30,100,50]</code>. H is 0&ndash;360, S and L are 0&ndash;100.</li>
+        <li><b>CIE xy</b> &mdash; <code>"0.64,0.33"</code>, <code>{x:0.64,y:0.33}</code>,
+        or <code>[0.64,0.33]</code>. An optional third value is the Y luminance
+        (0&ndash;1); without it the colour is returned at full brightness.</li>
+    </ul>
+
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>
+            <ul>
+                <li><code>rgb</code> &mdash; <code>{r,g,b}</code> (0&ndash;255)</li>
+                <li><code>hex</code> &mdash; e.g. <code>"#ff6400"</code></li>
+                <li><code>hsl</code> &mdash; <code>{h,s,l}</code></li>
+                <li><code>xy</code> &mdash; <code>{x,y,Y}</code> (sRGB / D65)</li>
+            </ul>
+        </dd>
+    </dl>
+</script>

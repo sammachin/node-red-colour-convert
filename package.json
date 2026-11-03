@@ -1,0 +1,47 @@
+{
+  "name": "@sammachin/node-red-colour-convert",
+  "version": "0.1.0",
+  "description": "A Node-RED node to convert colours between RGB, HSL and CIE xy",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "mocha \"test/**/*_spec.js\" --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sammachin/node-red-colour-convert.git"
+  },
+  "keywords": [
+    "node-red",
+    "colour",
+    "color",
+    "rgb",
+    "hsl",
+    "cie",
+    "xy"
+  ],
+  "author": "Sam Machin",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "*.js",
+    "*.html",
+    "LICENSE",
+    "README.md"
+  ],
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "colour-convert": "colour_convert.js"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.2.0",
+    "mocha": "^11.7.5",
+    "node-red": "^4.1.8",
+    "node-red-node-test-helper": "^0.3.6",
+    "should": "^13.2.3"
+  }
+}
